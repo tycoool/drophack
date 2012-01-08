@@ -76,6 +76,8 @@ ls_files['contents'].each do |meta|
   next unless meta['mime_type'] == 'application/pdf'
 
   save_file meta, get_file(meta)
+  
+  puts meta['path']
 
   #extract_text "processing/#{File.basename(meta[:path])}"
 
