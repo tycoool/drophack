@@ -3,6 +3,7 @@ require 'dropbox_sdk'
 require 'json'
 require 'open-uri'
 require 'yaml'
+require 'pdf/reader'
 
 require './conf/drophack_conf'
 
@@ -63,7 +64,15 @@ def extract_text(filepath)
 
   outfile = "#{filepath[0..filepath.rindex('.')]}txt"
 
-  system( "pdftotext #{filepath} > #{outfile}" )
+  converter = if RUBY_PLATFORM =~ /linux/
+   "pdftotext"
+  elsif RUBY_PLATFORM =~ /darwin/
+    "pdf_text"
+  else
+    raise "unknown platform (#{RUBY_PLATFORM}) detected"
+  end
+
+  system( "#{converter} #{filepath} > #{outfile}" )
 
   #raise "pdf conversion failed" if $?.to_i
 end
