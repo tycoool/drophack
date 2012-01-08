@@ -1,4 +1,4 @@
 processing*
 *.tmproj
-./conf/drophack_conf.rb
+conf/drophack_conf.rb
 
