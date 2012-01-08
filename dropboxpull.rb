@@ -61,11 +61,11 @@ end
 # for each (PDF) file, extract text 
 def extract_text(filepath)
 
-  outfile = "#{filepath[0..filename.rindex('.')]}txt"
+  outfile = "#{filepath[0..filepath.rindex('.')]}txt"
 
-  system( "pdftotext #{src_file} > #{outfile}" )
+  system( "pdftotext #{filepath} > #{outfile}" )
 
-  raise "pdf conversion failed" if $?
+  #raise "pdf conversion failed" if $?.to_i
 end
 
 
@@ -75,11 +75,13 @@ ls_files['contents'].each do |meta|
 
   next unless meta['mime_type'] == 'application/pdf'
 
-  save_file meta, get_file(meta)
-  
-  puts meta['path']
+  puts "saving #{meta['path']}"
 
-  #extract_text "processing/#{File.basename(meta[:path])}"
+  save_file meta, get_file(meta)
+
+  puts 'extracting text'
+
+  extract_text "processing/#{File.basename(meta['path'])}"
 
 end
 
