@@ -1,0 +1,3 @@
+APP_KEY = '<YOUR_KEY>'
+APP_SECRET = '<YOUR_SECRET>'
+ACCESS_TYPE = :app_folder
