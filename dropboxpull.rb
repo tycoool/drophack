@@ -2,6 +2,7 @@
 require 'dropbox_sdk'
 require 'json'
 require 'open-uri'
+require 'yaml'
 
 # PDF converter
 
@@ -24,7 +25,7 @@ def login
   authorize_url = $session.get_authorize_url
 
   # dev hack work around
-  puts "authorizing"
+  #puts "authorizing"
   #page = open(authorize_url).read
   #raise "Did not authorize" unless page =~ /Success/
 
@@ -50,24 +51,24 @@ end
 
 # get each file
 def get_file(parms)
-  $client.get_file("/#{parms[:path]}")
+  $client.get_file("/#{parms['path']}")
 end
 
 # save to folder with meta info
 def save_file(parms, data)
 
-  filename = File.basename(parms[:path])
-
-  rawfilename = filename[1..filename.rindex('.')]
-
+  filename = File.basename(parms['path'])
   File.open( "processing/#{filename}", "w+").write( data )
-  File.open( "processing/#{rawfilename}.meta", "w+").write( parms.to_json )
+
+
+  rawfilename = filename[0..filename.rindex('.')]
+  File.open( "processing/#{rawfilename}meta", "w+").write( parms.to_json )
 end
 
 # for each (PDF) file, extract text 
 def extract_text(filepath)
 
-  outfile = "#{filepath[1..filename.rindex('.')]}.txt"
+  outfile = "#{filepath[0..filename.rindex('.')]}txt"
 
   system( "pdftotext #{src_file} > #{outfile}" )
 
@@ -77,13 +78,13 @@ end
 
 login
 
-ls_files.each do |meta|
+ls_files['contents'].each do |meta|
 
-  next unless meta[:mime_type] == 'application/pdf'
+  next unless meta['mime_type'] == 'application/pdf'
 
   save_file meta, get_file(meta)
 
-  extract_text "processing/#{File.basename(meta[:path])}"
+  #extract_text "processing/#{File.basename(meta[:path])}"
 
 end
 
