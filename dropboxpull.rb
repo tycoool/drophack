@@ -4,16 +4,9 @@ require 'json'
 require 'open-uri'
 require 'yaml'
 
+require './conf/drophack_conf'
+
 # PDF converter
-
-
-
-APP_KEY = '6r39d4hnm3ngtyd'
-APP_SECRET = 'lhp4ez06xb1vxpi'
-
-ACCESS_TYPE = :app_folder
-
-
 
 # login
 
